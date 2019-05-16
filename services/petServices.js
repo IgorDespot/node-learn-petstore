@@ -3,14 +3,12 @@ const logger = require('../util/logger');
 
 const createPet = (req, res, next) => {
 
-    newPet = new Pet(req.body);
+    let newPet = new Pet(req.body);
 
     newPet.save().then(pet => {
-        //logger.info( 'New pet is saved.');
         res.status(200).send(pet);
     }).catch((err) => {
-        res.status(405).send('Invalid input');
-        //logger.error('Invalid input');
+        res.status(405).send('Invalid input.' + err);
     })
 };
 
@@ -57,10 +55,57 @@ const getPetById = (req, res, next) => {
     });
 };
 
+// update pet by ID
+const updatePetById = (req, res, next) => {
+    Pet.findByIdAndUpdate(req.body.id, {
+        category: req.body.category,
+        name: req.body.name,
+        photoUrls: req.body.photoUrls,
+        tags: req.body.tags,
+        status: req.body.status
+    }, {
+            new: true
+        }, (err, pet) => {
+            if (err) res.send(err);
+            else res.status(200).send(pet);
+        });
+};
 
+// updates pets name and/or staus via post request and from data
+const updatePetByFormDataViaPost = (req, res, next) => {
+    Pet.findByIdAndUpdate(req.params.id, {
+        name: req.body.name,
+        status: req.body.status
+    }, {
+        new: true
+    }, (err, pet) => {
+        if (err) res.send(err);
+        else res.status(200).send(pet);
+    });
+};
+    
+const deletePet = (req, res, next) => {
+
+    let petId = req.params.id;
+
+    Pet.remove({ _id: petId })
+        .then(pet => {
+            if (pet.length > 0) {
+                res.status(200).send(pet)
+            } else {
+                res.status(404).send(`Can not find with id ${petId}.`)
+            }
+        })
+        .catch((err) => {
+            res.status(400).send(`Invalid ID supplied.`);
+        })
+}
 
 module.exports = {
     createPet,
+    getPetById,
+    updatePetById,
     getPetsByStatus,
-    getPetById
+    deletePet,
+    updatePetByFormDataViaPost
 }

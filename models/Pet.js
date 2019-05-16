@@ -3,15 +3,13 @@ const Schema = mongoose.Schema;
 
 let CategorySchema = new Schema({
     name:{
-        type: String,
-        unique: true
+        type: String
     }
 });
 
 let TagSchema = new Schema({
     name:{
-        type: String,
-        unique: true
+        type: String
     }
 });
 
