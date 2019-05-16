@@ -11,7 +11,7 @@ const {
 router.post('/', createPet);
 router.get('/:id', getPetById);
 router.get('/getPetsByStatus/:status', getPetsByStatus);
-router.put('/:id', updatePetById);
+router.put('/', updatePetById);
 router.delete('/:id', deletePet);
 
 module.exports = router;
