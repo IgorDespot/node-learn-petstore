@@ -62,10 +62,10 @@ const deletePet = (req,res,next) => {
 
     Pet.remove({_id: petId})
     .then(pet => {
-        if(pet){
+        if(pet.lenth > 0){
             res.status(200).send(pet)
         }else{
-            res.status(404).send(`Can not find with id ${id}.`)
+            res.status(404).send(`Can not find with id ${petId}.`)
         }
     })
     .catch((err) => {

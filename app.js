@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// app.use('/user', userRoutes);
+app.use('/user', userRoutes);
 app.use('/pet', petRoutes);
 app.use('/store', storeRoutes);
 
