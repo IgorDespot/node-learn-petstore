@@ -53,14 +53,14 @@ var addUser = (req, res, next) => {
                 .save()
                 .then(result => {
                   console.log(result);
-                  // logger.info("User addition passed");
+                  logger.info("User addition passed");
                   res.status(201).json({
                     message: "User created"
                   });
                 })
                 .catch(err => {
                   console.log(err);
-                  // logger.error("User addition didnt pass");
+                  logger.error("User addition didnt pass");
                   res.status(500).json({
                     error: err
                   });
@@ -73,12 +73,12 @@ var addUser = (req, res, next) => {
   
   
   var login=(req, res, next) => {
-    //logger.info(`POST fired: login user ${req.body.username} , ${Date(Date.now())}`);
+   logger.info(`POST fired: login user ${req.body.username} , ${Date(Date.now())}`);
     User.find({ username: req.body.username })
       .exec()
       .then(user => {
         if (user.length < 1) {
-          // logger.error('User with this credentials does not exist'); 
+          logger.error('User with this credentials does not exist'); 
           return res.status(401).json({
             message: "Auth failed"
             
@@ -86,7 +86,7 @@ var addUser = (req, res, next) => {
         }
         bcrypt.compare(req.body.password, user[0].password, (err, result) => {
           if (err) {
-            // logger.error('Auth failed'); 
+            logger.error('Auth failed'); 
             return res.status(401).json({
               message: "Auth failed"
             });
@@ -107,7 +107,7 @@ var addUser = (req, res, next) => {
               token: token
             });
           }
-          // logger.error('Auth failed'); 
+          logger.error('Auth failed'); 
           res.status(401).json({
             message: "Auth failed"
           });
@@ -127,10 +127,10 @@ var addUser = (req, res, next) => {
 
     User.find().then(function(users){
       console.log(users);
-    // logger.info('Show all users requested '); 
+    logger.info('Show all users requested '); 
       res.send(users);
      }).catch(function (err) {
-      // logger.error('Show all users failed'); 
+      logger.error('Show all users failed'); 
       res.status(404).send("Cannot find users");
     })
   };
