@@ -5,27 +5,30 @@ const Schema = mongoose.Schema;
 const OrderSchema = new Schema({
     petId: {
         type: Number,
-        required: [true, 'You need to put petID']
+        required: true
     },
     quantity: {
-        quantity: Number,
-        required: [true, 'You need to put quantity']
+        type: Number,
+        required: true,
+        default: 1
     },
     shipDate: {
         type: Date,
-        required: [true, 'You need to put shipDate']
+        required: true
     },
     status: {
         type: String,
-        enum: ['placed', 'approved', 'delivered'],
-        required: [true, 'You need to put status']
+        enum: ['PLACED', 'APPROVED', 'DELIVERED'],
+        default: 'PLACED',
+        required: true
     },
     complete: {
         type: Boolean,
         required: true,
         default: false
-    },
-})
+    }
+});
 
+let Order = mongoose.model('ORDER', OrderSchema);
 
-module.exports = mongoose.model('Order', OrderSchema);
+module.exports = Order;
