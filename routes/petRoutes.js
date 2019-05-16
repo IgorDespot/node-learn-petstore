@@ -10,7 +10,7 @@ const {
 
 router.post('/', createPet);
 router.get('/:id', getPetById);
-router.get('/getPetsByStatus/:status', getPetsByStatus);
+router.get('/status/:status', getPetsByStatus);
 
 
 
