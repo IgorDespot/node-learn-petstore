@@ -4,12 +4,14 @@ const {
     createPet,
     getPetById,
     getPetsByStatus,
-    updatePetById
+    updatePetById,
+    deletePet
 } = require('../services/petServices');
 
 router.post('/', createPet);
 router.get('/:id', getPetById);
 router.get('/getPetsByStatus/:status', getPetsByStatus);
 router.put('/:id', updatePetById);
+router.delete('/:id', deletePet);
 
 module.exports = router;

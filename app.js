@@ -1,5 +1,5 @@
 const express = require('express');
-const logger = require('./util/logger');
+//const logger = require('./util/logger');
 const path = require('./util/path');
 const connection = require('./database/db');
 const userRoutes = require('./routes/userRoutes');

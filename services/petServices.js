@@ -1,16 +1,13 @@
 const Pet = require('../models/Pet');
-//const logger = require('../../util/logger');
 
 const createPet = (req, res, next) => {
 
-    newPet = new Pet(req.body);
+    let newPet = new Pet(req.body);
 
     newPet.save().then(pet => {
-        //logger.info( 'New pet is saved.');
-        res.status(200).send(pet);
+       res.status(200).send(pet);
     }).catch((err) => {
-        res.status(405).send('Invalid input');
-        //logger.error('Invalid input');
+       res.status(405).send('Invalid input.' + err);
     })
 };
 
@@ -58,9 +55,27 @@ const updatePetById = (req, res, next) => {
     });
 };
 
+const deletePet = (req,res,next) => {
+    
+    let petId = req.params.id;
+
+    Pet.remove({_id: petId})
+    .then(pet => {
+        if(pet){
+            res.status(200).send(pet)
+        }else{
+            res.status(404).send(`Can not find with id ${id}.`)
+        }
+    })
+    .catch((err) => {
+       res.status(400).send(`Invalid ID supplied.`);
+    })    
+}
+
 module.exports = {
     createPet,
     getPetById,
     updatePetById,
-    getPetsByStatus
+    getPetsByStatus,
+    deletePet
 }
