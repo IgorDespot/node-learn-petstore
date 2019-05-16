@@ -5,9 +5,9 @@ const createPet = (req, res, next) => {
     let newPet = new Pet(req.body);
 
     newPet.save().then(pet => {
-       res.status(200).send(pet);
+        res.status(200).send(pet);
     }).catch((err) => {
-       res.status(405).send('Invalid input.' + err);
+        res.status(405).send('Invalid input.' + err);
     })
 };
 
@@ -49,28 +49,28 @@ const updatePetById = (req, res, next) => {
         tags: req.body.tags,
         status: req.body.status
     }, {
-        new: true
-    }, (err, pet) => {
-        if (err) res.send(err);
-        else res.status(200).send(pet);
-    });
+            new: true
+        }, (err, pet) => {
+            if (err) res.send(err);
+            else res.status(200).send(pet);
+        });
 };
 
-const deletePet = (req,res,next) => {
-    
+const deletePet = (req, res, next) => {
+
     let petId = req.params.id;
 
-    Pet.remove({_id: petId})
-    .then(pet => {
-        if(pet.lenth > 0){
-            res.status(200).send(pet)
-        }else{
-            res.status(404).send(`Can not find with id ${petId}.`)
-        }
-    })
-    .catch((err) => {
-       res.status(400).send(`Invalid ID supplied.`);
-    })    
+    Pet.remove({ _id: petId })
+        .then(pet => {
+            if (pet.length > 0) {
+                res.status(200).send(pet)
+            } else {
+                res.status(404).send(`Can not find with id ${petId}.`)
+            }
+        })
+        .catch((err) => {
+            res.status(400).send(`Invalid ID supplied.`);
+        })
 }
 
 module.exports = {
