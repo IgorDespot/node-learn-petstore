@@ -14,10 +14,10 @@ var findByOrderId = (req, res, next) => {
     Order.find({ _id: id })
         .then(function (order) {
 
-            if (order) {
+            if (order.length > 0) {
                 res.status(200).send(order);
             } else {
-                res.status(404).send("Cannot find Order");
+                res.status(404).send(`Can not find Order with id ${orderId}`);
             }
 
         }).catch(function (err) {
@@ -25,8 +25,24 @@ var findByOrderId = (req, res, next) => {
             res.status(400).send("ID is wrong");
         });
 }
+var removeOrder = (req, res, next) => {
 
+    let orderId = req.params.id;
+
+    Order.remove({ _id: orderId })
+        .then(order => {
+            if (order.deletedCount > 0) {
+                res.status(200).send(order)
+            } else {
+                res.status(404).send(`Can not find Order with id ${orderId}`)
+            }
+        })
+        .catch((err) => {
+            res.status(400).send(`ID is wrong`);
+        })
+}
 module.exports = {
     createOrder,
-    findByOrderId
+    findByOrderId,
+    removeOrder
 }

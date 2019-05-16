@@ -30,8 +30,18 @@ let login = (req, res, next) => {
     });
 };
 
-
+var deleteUser = (req,res,next) => {
+    let newUsername = req.params.username;
+    User.remove({username: newUsername})
+    .then(user => {
+        res.status(200).send(user)
+    })
+    .catch((err) => {
+        res.status(400).send('Failed to delete user by username ' + `${newUsername}`);
+    })
+ }
 
 module.exports = {
-    login
+    login,
+    deleteUser
 }
