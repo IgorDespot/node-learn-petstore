@@ -56,6 +56,19 @@ const updatePetById = (req, res, next) => {
     });
 };
 
+// updates pets name and/or staus via post request and from data
+const updatePetByFormDataViaPost = (req, res, next) => {
+    Pet.findByIdAndUpdate(req.params.id, {
+        name: req.body.name,
+        status: req.body.status
+    }, {
+        new: true
+    }, (err, pet) => {
+        if (err) res.send(err);
+        else res.status(200).send(pet);
+    });
+};
+
 const deletePet = (req,res,next) => {
     
     let petId = req.params.id;
@@ -78,5 +91,6 @@ module.exports = {
     getPetById,
     updatePetById,
     getPetsByStatus,
-    deletePet
+    deletePet,
+    updatePetByFormDataViaPost
 }
