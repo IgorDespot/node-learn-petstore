@@ -33,7 +33,9 @@ let PetSchema = new Schema({
     },
     status: {
         type: String,
-        enum : ['AVAILABLE', 'PENDING', 'SOLD']
+        uppercase: true,
+        enum: ["AVAILABLE", "PENDING", "SOLD"],
+        default: "AVAILABLE"
     }
 });
 
