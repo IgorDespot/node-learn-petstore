@@ -43,10 +43,24 @@ const getPetById = (req, res, next) => {
     });
 };
 
-
+const updatePetById = (req, res, next) => {
+    Pet.findByIdAndUpdate(req.body.id, {
+        category: req.body.category,
+        name: req.name.name,
+        photoUrls: req.body.photoUrls,
+        tags: req.body.tags,
+        status: req.body.status
+    }, {
+        new: true
+    }, (err, pet) => {
+        if (err) res.send(err);
+        else res.status(200).send(pet);
+    });
+};
 
 module.exports = {
     createPet,
-    getPetsByStatus,
-    getPetById
+    getPetById,
+    updatePetById,
+    getPetsByStatus
 }
