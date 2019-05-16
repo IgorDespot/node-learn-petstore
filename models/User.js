@@ -13,39 +13,39 @@ const validateEmail = (email) => {
 
 let UserSchema = new Schema({
     username: {
-        value: String,
+       type: String,
         required: [true, 'This field must be filled'],
         trim: true
     },
     firstName: {
-        value: String,
+        type: String,
         required: [true, 'This field must be filled'],
         trim: true
     },
     lastName: {
-        value: String,
+        type: String,
         required: [true, 'This field must be filled'],
         trim: true
     },
     email: {
-        value: String,
+        type: String,
         required: [true, 'This field must be filled'],
         trim: true,
         validation: [validateEmail, 'You must enter a valid email']
     },
     password: {
-        value: String,
+        type: String,
         required: [true, 'This field must be filled'],
         trim: true,
         validate: [validatePass, 'You password must be atleast 8 characters long']
     },
     phone: {
-        value: String,
+        type: String,
         trim: true,
         required: [true, 'This field must be filled']
     },
     userStatus: {
-        value: Number,
+        type: Number,
         required: [true, 'This field must be filled'],
         trim: true
     }
