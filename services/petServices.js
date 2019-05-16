@@ -35,7 +35,18 @@ const getPetsByStatus = (req, res, next) => {
 };
 
 
+// finds one pet by its ID
+const getPetById = (req, res, next) => {
+    Pet.findById(req.params.id, (err, pet) => {
+        if (err) res.send(err);
+        else res.status(200).send(pet);
+    });
+};
+
+
+
 module.exports = {
     createPet,
-    getPetsByStatus
+    getPetsByStatus,
+    getPetById
 }
