@@ -101,11 +101,21 @@ const deletePet = (req, res, next) => {
         })
 }
 
+const updatePetImgUrl = (req, res, next) => {
+    Pet.findByIdAndUpdate(req.params.id, {
+        photoUrls: req.body.newPhotoUrls
+    }, { new: true}, (err, pet) => {
+        if (err) res.send(err);
+        else res.status(200).send(pet);
+    } );
+};
+
 module.exports = {
     createPet,
     getPetById,
     updatePetById,
     getPetsByStatus,
     deletePet,
-    updatePetByFormDataViaPost
+    updatePetByFormDataViaPost,
+    updatePetImgUrl
 }
