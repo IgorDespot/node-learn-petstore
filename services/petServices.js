@@ -85,15 +85,13 @@ const updatePetByFormDataViaPost = (req, res, next) => {
 };
     
 const deletePet = (req, res, next) => {
-
     let petId = req.params.id;
-
     Pet.remove({ _id: petId })
         .then(pet => {
             if (pet.length > 0) {
                 res.status(200).send(pet)
             } else {
-                res.status(404).send(`Can not find with id ${petId}.`)
+                res.status(404).send(`Can not find pet with id ${petId}.`)
             }
         })
         .catch((err) => {
@@ -101,11 +99,21 @@ const deletePet = (req, res, next) => {
         })
 }
 
+const updatePetImgUrl = (req, res, next) => {
+    Pet.findByIdAndUpdate(req.params.id, {
+        photoUrls: req.body.newPhotoUrls
+    }, { new: true}, (err, pet) => {
+        if (err) res.send(err);
+        else res.status(200).send(pet);
+    } );
+};
+
 module.exports = {
     createPet,
     getPetById,
     updatePetById,
     getPetsByStatus,
     deletePet,
-    updatePetByFormDataViaPost
+    updatePetByFormDataViaPost,
+    updatePetImgUrl
 }

@@ -8,19 +8,35 @@ dotenv.config();
 
 
 
-var deleteUser = (req,res,next) => {
+const deleteUser = (req,res,next) => {
     let newUsername = req.params.username;
-    User.remove({username: newUsername})
+    User.deleteOne({username: newUsername})
     .then(user => {
+      if (user.deleteCount > 0) {
         res.status(200).send(user)
+      } else {
+        res.status(404).send(`Can not find user with username ${newUsername}.`)
+      }
     })
     .catch((err) => {
-        res.status(400).send('Failed to delete user by username ' + `${newUsername}`);
+        res.status(400).send('Invalid username supplied.')
     })
  }
 
-
-
+const getUserByUsername = (req, res, next) => {
+    let newUsername = req.params.username;
+    User.find({username: newUsername})
+    .then(user => {
+      if (user.length > 0) {
+        res.status(200).send(user)
+      } else {
+        res.status(404).send(`Can not find user with username ${newUsername}.`)
+      }
+    })
+    .catch((err) => {
+      res.status(400).send(`Invalid username supplied.`)
+    })
+}
 
 
 var addUser = (req, res, next) => {
@@ -53,14 +69,14 @@ var addUser = (req, res, next) => {
                 .save()
                 .then(result => {
                   console.log(result);
-                  // logger.info("User addition passed");
+                  logger.info("User addition passed");
                   res.status(201).json({
                     message: "User created"
                   });
                 })
                 .catch(err => {
                   console.log(err);
-                  // logger.error("User addition didnt pass");
+                  logger.error("User addition didnt pass");
                   res.status(500).json({
                     error: err
                   });
@@ -73,12 +89,12 @@ var addUser = (req, res, next) => {
   
   
   var login=(req, res, next) => {
-    //logger.info(`POST fired: login user ${req.body.username} , ${Date(Date.now())}`);
+   logger.info(`POST fired: login user ${req.body.username} , ${Date(Date.now())}`);
     User.find({ username: req.body.username })
       .exec()
       .then(user => {
         if (user.length < 1) {
-          // logger.error('User with this credentials does not exist'); 
+          logger.error('User with this credentials does not exist'); 
           return res.status(401).json({
             message: "Auth failed"
             
@@ -86,7 +102,7 @@ var addUser = (req, res, next) => {
         }
         bcrypt.compare(req.body.password, user[0].password, (err, result) => {
           if (err) {
-            // logger.error('Auth failed'); 
+            logger.error('Auth failed'); 
             return res.status(401).json({
               message: "Auth failed"
             });
@@ -107,7 +123,7 @@ var addUser = (req, res, next) => {
               token: token
             });
           }
-          // logger.error('Auth failed'); 
+          logger.error('Auth failed'); 
           res.status(401).json({
             message: "Auth failed"
           });
@@ -121,22 +137,22 @@ var addUser = (req, res, next) => {
       });
   };
   
-  
-  
   var getAllUsers = (req, res, next) => {
 
     User.find().then(function(users){
       console.log(users);
-    // logger.info('Show all users requested '); 
+    logger.info('Show all users requested '); 
       res.send(users);
      }).catch(function (err) {
-      // logger.error('Show all users failed'); 
+      logger.error('Show all users failed'); 
       res.status(404).send("Cannot find users");
     })
   };
+
   module.exports = {
     login,
     deleteUser,
     addUser,
-    getAllUsers
+    getAllUsers,
+    getUserByUsername
 }

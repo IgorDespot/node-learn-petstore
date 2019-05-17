@@ -6,7 +6,8 @@ const {
     getPetsByStatus,
     updatePetById,
     deletePet,
-    updatePetByFormDataViaPost
+    updatePetByFormDataViaPost,
+    updatePetImgUrl
 } = require('../services/petServices');
 
 router.post('/', createPet);
@@ -15,5 +16,6 @@ router.get('/status/:status', getPetsByStatus);
 router.put('/', updatePetById);
 router.delete('/:id', deletePet);
 router.post('/:id', updatePetByFormDataViaPost);
+router.post('/:id/uploadImage', updatePetImgUrl);
 
 module.exports = router;
