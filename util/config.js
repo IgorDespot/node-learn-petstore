@@ -1,11 +1,11 @@
 const dotenv = require('dotenv').config();
 
-var host = process.env.HOST;
-var port = process.env.PORT;
-var username = process.env.DB_USER;
-var password = process.env.DB_PASSWORD;
-var database_name = process.env.DB;
-var server_port = process.env.SERVER_PORT;
+const host = process.env.HOST;
+const port = process.env.PORT;
+const username = process.env.DB_USER;
+const password = process.env.DB_PASSWORD;
+const database_name = process.env.DB;
+const server_port = process.env.SERVER_PORT;
 
 
 module.exports = {

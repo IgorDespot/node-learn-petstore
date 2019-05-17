@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let ApiResponseSchema = new Schema({
+const ApiResponseSchema = new Schema({
     code: {
         type: Number,        
         trim: true
@@ -16,6 +16,6 @@ let ApiResponseSchema = new Schema({
     }   
 });
 
-const ApiResponseModel = mongoose.model('ApiResponse', ApiResponseSchema);
+let ApiResponseModel = mongoose.model('ApiResponse', ApiResponseSchema);
 
 module.exports = ApiResponseModel;

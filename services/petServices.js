@@ -2,26 +2,20 @@ const Pet = require('../models/Pet');
 const logger = require('../util/logger');
 const js2xmlparser = require("js2xmlparser");
 
+/******* CREATE PET ********/
 const createPet = (req, res, next) => {
-
     let newPet = new Pet(req.body);
-
     newPet.save().then(pet => {
-       
-        res.status(200).send(pet);
+       res.status(200).send(pet);
     }).catch((err) => {
         res.status(405).send('Invalid input.' + err);
     })
 };
 
-
-// GET PETS BY STATUS
-// **
+/***** GET PETS BY STATUS ******/
 const getPetsByStatus = (req, res, next) => {
     logger.info(`GET fired: get pets by status. ${Date(Date.now())}`);
-
     let status = req.params.status;
-
     if (status == 'available') {
         Pet.find({
             "status": "AVAILABLE"
@@ -48,8 +42,7 @@ const getPetsByStatus = (req, res, next) => {
     }
 };
 
-
-// finds one pet by its ID
+/******* FIND ONE PET BY ITS ID ********/
 const getPetById = (req, res, next) => {
     Pet.findById(req.params.id, (err, pet) => {
         if (err) res.send(err);
@@ -57,7 +50,7 @@ const getPetById = (req, res, next) => {
     });
 };
 
-/******* get pet by ID and return it in XML format ********/
+/*******  FIND ONE PET BY ITS ID AND RETURN IT IN XML FORMAT ********/
 const getPetByIdXmlForm = (req, res, next) => {
     Pet.findById(req.params.id, (err, pet) => {
         if (err) res.send(err);
@@ -73,7 +66,7 @@ const getPetByIdXmlForm = (req, res, next) => {
     });
 };
 
-// update pet by ID
+/******* UPDATE PET BY ID ********/
 const updatePetById = (req, res, next) => {
     Pet.findByIdAndUpdate(req.body.id, {
         category: req.body.category,
@@ -89,7 +82,7 @@ const updatePetById = (req, res, next) => {
         });
 };
 
-// updates pets name and/or staus via post request and from data
+/******* UPDATE PETS NAME AND/OR STATUS VIA POST REQUEST AND FROM DATA ********/
 const updatePetByFormDataViaPost = (req, res, next) => {
     Pet.findByIdAndUpdate(req.params.id, {
         name: req.body.name,
@@ -101,7 +94,8 @@ const updatePetByFormDataViaPost = (req, res, next) => {
         else res.status(200).send(pet);
     });
 };
-    
+
+/******* DELETE PET BY ID ********/
 const deletePet = (req, res, next) => {
     let petId = req.params.id;
     Pet.remove({ _id: petId })
@@ -115,8 +109,9 @@ const deletePet = (req, res, next) => {
         .catch((err) => {
             res.status(400).send(`Invalid ID supplied.`);
         })
-}
+};
 
+/******* uPDATE PET IMAGEURL ********/
 const updatePetImgUrl = (req, res, next) => {
     Pet.findByIdAndUpdate(req.params.id, {
         photoUrls: req.body.newPhotoUrls

@@ -6,8 +6,7 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
 
-
-
+/******* DELETE USER BY USERNAME ********/
 const deleteUser = (req, res, next) => {
   let newUsername = req.params.username;
   User.deleteOne({ username: newUsername })
@@ -21,8 +20,9 @@ const deleteUser = (req, res, next) => {
     .catch((err) => {
       res.status(400).send('Invalid username supplied.')
     })
-}
+};
 
+/******* FIND USER BY USERNAME ********/
 const getUserByUsername = (req, res, next) => {
   let newUsername = req.params.username;
   User.find({ username: newUsername })
@@ -36,9 +36,9 @@ const getUserByUsername = (req, res, next) => {
     .catch((err) => {
       res.status(400).send(`Invalid username supplied.`)
     })
-}
+};
 
-
+/******* CREATE USER ********/
 const addUser = (req, res, next) => {
   logger.info(`POST fired: add user ${req.body.username} , ${Date(Date.now())}`);
   User.find({ username: req.body.username })
@@ -51,9 +51,7 @@ const addUser = (req, res, next) => {
       } else {
         bcrypt.hash(req.body.password, 10, (err, hash) => {
           if (err) {
-            return res.status(500).json({
-              error: err
-            });
+            return res.status(500).json({error: err});
           } else {
             const user = new User({
               _id: new mongoose.Types.ObjectId(),
@@ -65,8 +63,7 @@ const addUser = (req, res, next) => {
               phone: req.body.phone,
               userStatus: req.body.userStatus
             });
-            user
-              .save()
+            user.save()
               .then(result => {
                 console.log(result);
                 logger.info("User addition passed");
@@ -87,7 +84,7 @@ const addUser = (req, res, next) => {
     });
 };
 
-
+/******* LOGIN ********/
 const login = (req, res, next) => {
   logger.info(`POST fired: login user ${req.body.username} , ${Date(Date.now())}`);
   User.find({ username: req.body.username })
@@ -95,10 +92,7 @@ const login = (req, res, next) => {
     .then(user => {
       if (user.length < 1) {
         logger.error('User with this credentials does not exist');
-        return res.status(401).json({
-          message: "Auth failed"
-
-        });
+        return res.status(401).json({message: "Auth failed"});
       }
       bcrypt.compare(req.body.password, user[0].password, (err, result) => {
         if (err) {
@@ -137,10 +131,8 @@ const login = (req, res, next) => {
     });
 };
 
-
-
+/******* GET ALL USERS ********/
 const getAllUsers = (req, res, next) => {
-
   User.find().then(function (users) {
     console.log(users);
     logger.info('Show all users requested ');
@@ -150,12 +142,15 @@ const getAllUsers = (req, res, next) => {
     res.status(404).send("Cannot find users");
   })
 };
+
+/******* UPDATE USER ********/
 const updateUser = (req, res, next) => {
   User.updateOne({
     username: req.params.username
   }, {
       $set: req.body
-    }).then(function (users) {
+    })
+    .then(function (users) {
       if (users.n > 0) {
         logger.info(`User '${req.params.username}' is updated`);
         res.status(200).send(`User '${req.params.username}' is updated`);
@@ -163,7 +158,8 @@ const updateUser = (req, res, next) => {
         logger.error(`Can not find User with username ${req.params.username}`);
         res.status(404).send(`Can not find User with username ${req.params.username}`);
       }
-    }).catch(function (err) {
+    })
+    .catch(function (err) {
       logger.error(`User '${req.params.username}' is not updated` + err);
       res.status(400).send("Username is wrong" + err);
     })

@@ -1,19 +1,19 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let CategorySchema = new Schema({
+const CategorySchema = new Schema({
     name:{
         type: String
     }
 });
 
-let TagSchema = new Schema({
+const TagSchema = new Schema({
     name:{
         type: String
     }
 });
 
-let PetSchema = new Schema({
+const PetSchema = new Schema({
     category: {
         type: CategorySchema
     },
