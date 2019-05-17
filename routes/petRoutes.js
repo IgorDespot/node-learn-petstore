@@ -7,11 +7,13 @@ const {
     updatePetById,
     deletePet,
     updatePetByFormDataViaPost,
-    updatePetImgUrl
+    updatePetImgUrl,
+    getPetByIdXmlForm
 } = require('../services/petServices');
 
 router.post('/', createPet);
 router.get('/:id', getPetById);
+router.get('/xml/:id', getPetByIdXmlForm);
 router.get('/status/:status', getPetsByStatus);
 router.put('/', updatePetById);
 router.delete('/:id', deletePet);

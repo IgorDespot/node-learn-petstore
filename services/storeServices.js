@@ -1,8 +1,8 @@
 const Order = require('../models/Order');
 const Pet = require('../models/Pet');
+const js2xmlparser = require("js2xmlparser");
 
-
-let createOrder = (req, res, next) => {
+const createOrder = (req, res, next) => {
     Order.create(req.body)
         .then(function (order) {
             res.send(order);
@@ -11,9 +11,7 @@ let createOrder = (req, res, next) => {
             res.status(404).send("Cannot create Order");
         });
 }
-
-
-let findByOrderId = (req, res, next) => {
+const findByOrderId = (req, res, next) => {
     let id = req.params.id;
     Order.find({
             _id: id
@@ -32,8 +30,24 @@ let findByOrderId = (req, res, next) => {
         });
 }
 
+/******* get order by ID and return it in XML format ********/
+const findOrderByIdFormXML = (req, res, next) => {
+    Order.findById(req.params.id, (err, order) => {
+        if (err) res.send(err);
+        else  {
+            let orderXML = {
+                petId : `${order.petId}`,
+                quantity : `${order.quantity}`,
+                shipDate : `${order.shipDate}`,
+                status : `${order.status}`,
+                complete : `${order.complete}`
+            }
+            res.status(200).send(js2xmlparser.parse("order", orderXML))
+        }
+    });
+};
 
-let removeOrder = (req, res, next) => {
+const removeOrder = (req, res, next) => {
     let orderId = req.params.id;
     Order.remove({
             _id: orderId
@@ -53,7 +67,7 @@ let removeOrder = (req, res, next) => {
 
 // GET STORE INVENTORY
 // **
-let getInventory = (req, res, next) => {
+const getInventory = (req, res, next) => {
     Pet.aggregate([{
             "$group": {
                 _id: "$status",
@@ -81,5 +95,6 @@ module.exports = {
     createOrder,
     findByOrderId,
     removeOrder,
-    getInventory
+    getInventory,
+    findOrderByIdFormXML
 }

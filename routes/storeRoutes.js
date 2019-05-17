@@ -4,16 +4,15 @@ const {
     createOrder,
     findByOrderId,
     removeOrder,
-    getInventory
+    getInventory,
+    findOrderByIdFormXML
 } = require('../services/storeServices');
-
-
 
 router.post('/order', createOrder);
 router.get('/order/:id', findByOrderId);
 router.delete('/order/:id', removeOrder);
 router.get('/inventory', getInventory);
-
+router.get('/orderXML/:id', findOrderByIdFormXML);
 
 
 module.exports = router;

@@ -1,11 +1,13 @@
 const Pet = require('../models/Pet');
 const logger = require('../util/logger');
+const js2xmlparser = require("js2xmlparser");
 
 const createPet = (req, res, next) => {
 
     let newPet = new Pet(req.body);
 
     newPet.save().then(pet => {
+       
         res.status(200).send(pet);
     }).catch((err) => {
         res.status(405).send('Invalid input.' + err);
@@ -51,7 +53,23 @@ const getPetsByStatus = (req, res, next) => {
 const getPetById = (req, res, next) => {
     Pet.findById(req.params.id, (err, pet) => {
         if (err) res.send(err);
-        else res.status(200).send(pet);
+        else  res.status(200).send(pet)
+    });
+};
+
+/******* get pet by ID and return it in XML format ********/
+const getPetByIdXmlForm = (req, res, next) => {
+    Pet.findById(req.params.id, (err, pet) => {
+        if (err) res.send(err);
+        else {
+            let xmlPet = {
+                category: `${pet.category.name}`,
+                name: `${pet.name}`,
+                status:`${pet.status}`,
+                tags:`${pet.tags[0].name}`
+            }
+            res.status(200).send(js2xmlparser.parse("pet", xmlPet))
+        };
     });
 };
 
@@ -115,5 +133,6 @@ module.exports = {
     getPetsByStatus,
     deletePet,
     updatePetByFormDataViaPost,
-    updatePetImgUrl
+    updatePetImgUrl,
+    getPetByIdXmlForm
 }
