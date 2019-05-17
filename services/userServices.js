@@ -8,19 +8,35 @@ dotenv.config();
 
 
 
-var deleteUser = (req,res,next) => {
+const deleteUser = (req,res,next) => {
     let newUsername = req.params.username;
-    User.remove({username: newUsername})
+    User.deleteOne({username: newUsername})
     .then(user => {
+      if (user.deleteCount > 0) {
         res.status(200).send(user)
+      } else {
+        res.status(404).send(`Can not find user with username ${newUsername}.`)
+      }
     })
     .catch((err) => {
-        res.status(400).send('Failed to delete user by username ' + `${newUsername}`);
+        res.status(400).send('Invalid username supplied.')
     })
  }
 
-
-
+const getUserByUsername = (req, res, next) => {
+    let newUsername = req.params.username;
+    User.find({username: newUsername})
+    .then(user => {
+      if (user.length > 0) {
+        res.status(200).send(user)
+      } else {
+        res.status(404).send(`Can not find user with username ${newUsername}.`)
+      }
+    })
+    .catch((err) => {
+      res.status(400).send(`Invalid username supplied.`)
+    })
+}
 
 
 var addUser = (req, res, next) => {
@@ -121,8 +137,6 @@ var addUser = (req, res, next) => {
       });
   };
   
-  
-  
   var getAllUsers = (req, res, next) => {
 
     User.find().then(function(users){
@@ -134,9 +148,11 @@ var addUser = (req, res, next) => {
       res.status(404).send("Cannot find users");
     })
   };
+
   module.exports = {
     login,
     deleteUser,
     addUser,
-    getAllUsers
+    getAllUsers,
+    getUserByUsername
 }

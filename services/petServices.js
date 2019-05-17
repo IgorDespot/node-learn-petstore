@@ -85,15 +85,13 @@ const updatePetByFormDataViaPost = (req, res, next) => {
 };
     
 const deletePet = (req, res, next) => {
-
     let petId = req.params.id;
-
     Pet.remove({ _id: petId })
         .then(pet => {
             if (pet.length > 0) {
                 res.status(200).send(pet)
             } else {
-                res.status(404).send(`Can not find with id ${petId}.`)
+                res.status(404).send(`Can not find pet with id ${petId}.`)
             }
         })
         .catch((err) => {
